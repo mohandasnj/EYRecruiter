@@ -1,7 +1,12 @@
 from faker import Faker
 from faker.providers import BaseProvider, DynamicProvider
 
+import json
 import random
+
+f = open("universities.json")
+
+universities = json.load(f)
 
 skills_provider = DynamicProvider(
     provider_name="skills",
@@ -32,6 +37,10 @@ class competency_provider(BaseProvider):
             return random.choice(["Cybersecurity", "Data & Analytics", "Digital & Emerging Technology", "Technology Solution Delivery", "Technology Transformation"])
         elif competency == "People Advisory Services":
             return random.choice(["Workforce Advisory", "Integrated Mobile Talent"])
+        
+class education_provider(BaseProvider):
+    def education(self):
+        return random.choice(universities)["institution"]
      
 fake = Faker()
 
@@ -39,6 +48,7 @@ fake.add_provider(skills_provider)
 fake.add_provider(service_line_provider)
 fake.add_provider(sub_service_line_provider)
 fake.add_provider(competency_provider)
+fake.add_provider(education_provider)
 
 name = fake.name(),
 
@@ -51,6 +61,7 @@ out = {
     "number": fake.phone_number(),
     "email": '.'.join(name[0].split()).lower() + "@email.com",
     "location": fake.city(),
+    "educaton": fake.education(),    
     "language": fake.language_name(),
     "skills": fake.skills(),
     "service_line": service_line,
