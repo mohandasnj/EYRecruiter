@@ -4,7 +4,7 @@ EY Hackathon Project
 Starting the project:
 ```
 pip install -r requirements.txt
-streamlit run app.py 
+python3 -m streamlit run app.py
 ```
 
 RULES AND REGULATIONS
