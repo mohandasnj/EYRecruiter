@@ -52,23 +52,28 @@ fake.add_provider(education_provider)
 
 name = fake.name(),
 
+out = []
 
-service_line = fake.service_line()
-sub_service_line = fake.sub_service_line(service_line)
+for _ in range(10):
+    service_line = fake.service_line()
+    sub_service_line = fake.sub_service_line(service_line)
 
-out = {
-    "name": name[0],
-    "number": fake.phone_number(),
-    "email": '.'.join(name[0].split()).lower() + "@email.com",
-    "location": fake.city(),
-    "educaton": fake.education(),    
-    "language": fake.language_name(),
-    "skills": fake.skills(),
-    "service_line": service_line,
-    "sub_service_line": sub_service_line,
-}
+    person = {
+        "name": name[0],
+        "number": fake.phone_number(),
+        "email": '.'.join(name[0].split()).lower() + "@email.com",
+        "location": fake.city(),
+        "educaton": fake.education(),    
+        "language": fake.language_name(),
+        "skills": fake.skills(),
+        "service_line": service_line,
+        "sub_service_line": sub_service_line,
+    }
 
-if service_line == "Consulting":
-    out["competency"] = fake.competency(sub_service_line)
+    if service_line == "Consulting":
+        person["competency"] = fake.competency(sub_service_line)
 
-print(out)
+    out.append(person)
+
+with open("people.json", "w") as f:
+    json.dump(out, f)
