@@ -5,7 +5,6 @@ import json
 import random
 
 f = open("universities.json")
-
 universities = json.load(f)
 
 skills_provider = DynamicProvider(
@@ -18,8 +17,13 @@ service_line_provider = DynamicProvider(
     elements=["Assurance", "Tax", "Consulting", "Strategy"]
 )
 
-class sub_service_line_provider(BaseProvider):
-    def sub_service_line(self, service_line: str) -> str:
+personal_interests_provider = DynamicProvider(
+    provider_name="personal_interests",
+    elements=["Acrobatics", "Acting", "Animals", "Animation", "Aquariums", "Archery", "Architecture", "Astronomy", "Baking", "Beekeeping", "Birdwatching", "Board Games", "Bonsai", "Botany", "Bowling", "Boxing", "Calligraphy", "Camping", "Canoeing", "Chalk Art", "Cheesemaking", "Chess", "Citizen Science", "Coin Collecting", "Collecting", "Comedy", "Comic Books", "Computing & Coding", "Confectionery", "Cooking", "Cosplay", "Crafts", "Creative Writing", "Cultural Activities", "Cycling", "Cosmetics", "Fashion", "DJing", "Dance", "Darts", "Design", "Digital Art", "Drawing", "Electronics", "Embroidery", "Environment", "Fandom", "Farming", "Fashion Design", "Festivals", "Filmmaking", "Fishing", "Fitness", "Floral Design", "Flying", "Game Mods", "Gardening", "Go", "Hiking", "Home Improvement", "Homebrewing", "Horseback Riding", "Improv", "Inline Skating", "Journaling", "Juggling", "Karaoke", "Kayaking", "Kite Flying", "Knitting", "Knowledge Games", "Languages", "Learning", "Magic", "Maker Culture", "Makeup", "Martial Arts", "Media Production", "Metal Detecting", "Metalworking", "Model Building", "Motor Sports", "Mountain Biking", "Music", "Nail Art", "Origami", "Paintball", "Painting", "Photography", "Podcasting", "Pool", "Pottery", "Puzzles", "Quilting", "Reading", "Remote Control Vehicles", "Reuse & Repair", "Robotics", "Rock Climbing", "Roller Skating", "Running", "Sailing & Boating", "Scouting", "Scrapbooking", "Scuba Diving", "Sculpting", "Sewing", "Singing", "Skating", "Skiing & Snowboarding", "Skydiving", "Slow Culture", "Snowshoeing", "Sports", "Stamp Collecting", "Street Art", "Street Fashion", "Subculture", "Surfing & Bodyboarding", "Swimming", "Tactical Urbanism", "Tennis", "Trainspotting", "Travel", "Vegetable Gardening", "Video Games", "Video Production", "Weightlifting", "Winemaking", "Woodworking", "Word Games", "Yoga", "Zumba"]
+)
+
+class competency_provider(BaseProvider):
+    def competency(self, service_line: str) -> str:
         if service_line == "Assurance":
             return random.choice(["Audit", "CCaSS", "FAAS", "Forensic & Integrity Services"])
         elif service_line == "Tax":
@@ -29,46 +33,67 @@ class sub_service_line_provider(BaseProvider):
         elif service_line == "Strategy":
             return random.choice(["Transactions and Corporate Finance", "Parthenon", "International Tax and Transaction Services"])
 
-class competency_provider(BaseProvider):
-    def competency(self, competency: str) -> str:
+class sub_competency_provider(BaseProvider):
+    def sub_competency(self, competency: str) -> str:
         if competency == "Business Consulting":
             return random.choice(["Business Transformation", "Enterprise Risk", "Finance", "Financial Services Risk", "Supply Chain & Operations", "Technology Risk"])
         elif competency == "Technology Consulting":
             return random.choice(["Cybersecurity", "Data & Analytics", "Digital & Emerging Technology", "Technology Solution Delivery", "Technology Transformation"])
         elif competency == "People Advisory Services":
             return random.choice(["Workforce Advisory", "Integrated Mobile Talent"])
-        
+
 class education_provider(BaseProvider):
     def education(self):
         return random.choice(universities)["institution"]
-     
+
 fake = Faker()
 
 fake.add_provider(skills_provider)
 fake.add_provider(service_line_provider)
-fake.add_provider(sub_service_line_provider)
 fake.add_provider(competency_provider)
+fake.add_provider(sub_competency_provider)
+fake.add_provider(personal_interests_provider)
 fake.add_provider(education_provider)
 
-name = fake.name(),
+out = []
+colleagues = []
+names = []
 
+for _ in range(100):
+    name = fake.name()
+    names.append(name)
+    service_line = fake.service_line()
+    competency = fake.competency(service_line)
+    personal_interests = []
+    for i in range(random.randrange(3, 6)):
+        personal_interests.append(fake.personal_interests())
 
-service_line = fake.service_line()
-sub_service_line = fake.sub_service_line(service_line)
+    person = {
+        "name": name,
+        "number": fake.phone_number(),
+        "email": '.'.join(name.split()).lower() + "@email.com",
+        "location": fake.city(),
+        "educaton": fake.education(),    
+        "language": fake.language_name(),
+        "skills": fake.skills(),
+        "service_line": service_line,
+        "competency": competency,
+        "personal_interests": personal_interests,
+        "people_worked_with": colleagues
+    }
 
-out = {
-    "name": name[0],
-    "number": fake.phone_number(),
-    "email": '.'.join(name[0].split()).lower() + "@email.com",
-    "location": fake.city(),
-    "educaton": fake.education(),    
-    "language": fake.language_name(),
-    "skills": fake.skills(),
-    "service_line": service_line,
-    "sub_service_line": sub_service_line,
-}
+    if service_line == "Consulting":
+        person["sub_competency"] = fake.sub_competency(competency)
 
-if service_line == "Consulting":
-    out["competency"] = fake.competency(sub_service_line)
+    out.append(person)
 
-print(out)
+for person in out:
+    for i in range(random.randrange(10)):
+        n = random.choice(names)
+        if n not in colleagues:
+            colleagues.append(n)
+    person["people_worked_with"] = colleagues
+    colleagues = []
+
+with open("people.json", "w") as f:
+    json.dump(out, f)
