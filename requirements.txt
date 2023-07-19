@@ -6,3 +6,4 @@ Faker==19.1.0
 pathlib==1.0.1
 chromadb
 tiktoken
+jq

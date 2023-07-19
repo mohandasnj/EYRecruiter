@@ -43,5 +43,5 @@ memory = ConversationBufferMemory(memory_key="chat_history", return_messages=Tru
 retriever=vectorstore.as_retriever()
 chat = ConversationalRetrievalChain.from_llm(GPT_35,retriever=retriever,memory=memory)
 
-result = chat({"question": "I'm looking to connect with someone with experience in scrum"})
-print(result)
+# result = chat({"question": "I'm looking to connect with someone with experience in scrum"})
+# print(result)
