@@ -4,13 +4,16 @@ from faker.providers import BaseProvider, DynamicProvider
 import json
 import random
 
+
+skills_file = open("technical_skills.txt")
+skills_lines = skills_file.readlines()
 f = open("universities.json")
 universities = json.load(f)
 
-skills_provider = DynamicProvider(
-    provider_name="skills",
-    elements=[""]
-)
+# skills_provider = DynamicProvider(
+#     provider_name="skills",
+#     elements=[""]
+# )
 
 service_line_provider = DynamicProvider(
     provider_name="service_line",
@@ -48,7 +51,7 @@ class education_provider(BaseProvider):
 
 fake = Faker()
 
-fake.add_provider(skills_provider)
+# fake.add_provider(skills_provider)
 fake.add_provider(service_line_provider)
 fake.add_provider(competency_provider)
 fake.add_provider(sub_competency_provider)
@@ -59,7 +62,7 @@ out = []
 colleagues = []
 names = []
 
-for _ in range(100):
+for _ in range(10):
     name = fake.name()
     names.append(name)
     service_line = fake.service_line()
@@ -67,15 +70,19 @@ for _ in range(100):
     personal_interests = []
     for i in range(random.randrange(3, 6)):
         personal_interests.append(fake.personal_interests())
+    skills = []
+    for i in range(random.randrange(2,5)):
+        skills.append(random.choice(skills_lines).strip())
+    
 
     person = {
         "name": name,
         "number": fake.phone_number(),
         "email": '.'.join(name.split()).lower() + "@email.com",
         "location": fake.city(),
-        "educaton": fake.education(),    
+        "education": fake.education(),    
         "language": fake.language_name(),
-        "skills": fake.skills(),
+        "skills": skills,
         "service_line": service_line,
         "competency": competency,
         "personal_interests": personal_interests,
@@ -94,6 +101,17 @@ for person in out:
             colleagues.append(n)
     person["people_worked_with"] = colleagues
     colleagues = []
+
+    person_string = (f'I am {person["name"]}, with email {person["email"]} and phone number {person["number"]}, ' 
+    f'educated at {person["education"]}, and from {person["location"]}. I speak the language {person["language"]}. ' 
+    f'I work in the {person["service_line"]} service line, in the {person["competency"]} competency. ' 
+    f'{"" if person["service_line"] != "Consulting" else "I am also in the " + str(person["sub_competency"]) + " subpractice."}'
+    f'My skills are {",".join(person["skills"])}, and my personal interests are {",".join(person["personal_interests"])}. '
+    f'During my time at EY, I\'ve worked with {",".join(person["people_worked_with"])}.')
+
+    person["person_string"] = person_string
+
+
 
 with open("people.json", "w") as f:
     json.dump(out, f)

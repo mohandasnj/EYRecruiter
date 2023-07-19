@@ -3,3 +3,4 @@ openai==0.27.2
 python-dotenv==1.0.0
 streamlit==1.22.0
 Faker==19.1.0
+pathlib==1.0.1
