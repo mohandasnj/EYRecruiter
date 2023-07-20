@@ -62,7 +62,7 @@ out = []
 colleagues = []
 names = []
 
-for _ in range(10):
+for _ in range(215):
     name = fake.name()
     names.append(name)
     service_line = fake.service_line()
@@ -102,14 +102,7 @@ for person in out:
     person["people_worked_with"] = colleagues
     colleagues = []
 
-    person_string = (f'I am {person["name"]}, with email {person["email"]} and phone number {person["number"]}, ' 
-    f'educated at {person["education"]}, and from {person["location"]}. I speak the language {person["language"]}. ' 
-    f'I work in the {person["service_line"]} service line, in the {person["competency"]} competency. ' 
-    f'{"" if person["service_line"] != "Consulting" else "I am also in the " + str(person["sub_competency"]) + " subpractice."}'
-    f'My skills are {",".join(person["skills"])}, and my personal interests are {",".join(person["personal_interests"])}. '
-    f'During my time at EY, I\'ve worked with {",".join(person["people_worked_with"])}.')
-
-    person["person_string"] = person_string
+    # person["person_string"] = person_string
 
 
 
