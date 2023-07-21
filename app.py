@@ -12,9 +12,7 @@ st.set_page_config(
         initial_sidebar_state="expanded",
     )
 
-st.image("logo.png", width = 700)
-
-st.title("hi")
+st.title("EYRecruiter")
 
 ## RENDER USER INPUT AND DEFINE HANDLER 
 user_prompt = st.text_input("Find a connection!", key="user_prompt")
@@ -27,7 +25,7 @@ if user_prompt:
     # print(user_prompt)
     response = GPT_4([
         SystemMessage(content=f"Here is the people data structured as JSON:\n{data}"), 
-        HumanMessage(content=user_prompt + " Please put any JSON lists in sentence form. Please format your response to use Markdown to add emphasis to sections.")]).content
+        HumanMessage(content=user_prompt + "  Please put any JSON lists in sentence form. Please format your response to use Markdown to add emphasis to sections.")]).content
 
     ## DISPLAY RESPONSE 
     st.markdown(response)  
