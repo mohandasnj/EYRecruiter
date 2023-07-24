@@ -47,16 +47,11 @@ def chat(user_prompt):
     response = openai.ChatCompletion.create(
         engine="gpt-4-32k",
         messages=[
-            {"role": "system", "content": "You are assisting a user to find an employee from a JSON dataset based on given criteria. You may only use the provided dataset, and be sure to consider the entire dataset when generating responses. Never respond with random people if their criteria don't match the prompt."},
-            {"role": "assistant", "content": f"When displaying names, make sure to include contact information as well. Do not output lists in JSON format, instead display them as english sentences. The dataset is structured as JSON, and is attached below: \n {data}"},
+            {"role": "system", "content": "You are assisting a user to find an employee from a JSON dataset based on given criteria. You may only use the provided dataset, and be sure to consider the entire dataset when generating responses. Never respond with a person if their criteria don't match the prompt."},
+            {"role": "assistant", "content": f"When displaying names, make sure to include contact information as well. Use Markdown to add emphasis to relevant sections of your response. Do not output lists in JSON format, instead display them only as english sentences. The dataset is structured as JSON, and is attached below: \n {data}"},
             {"role": "user", "content": user_prompt}
         ]
     )
-    # response = GPT_4([
-    #     SystemMessage(content=f"You are an aHere is the people data structured as JSON:\n{data}"), 
-    #     HumanMessage(content=user_prompt)]).content
-        # HumanMessage(content=user_prompt + " Do not allow lists in JSON form. Please format your response to use Markdown to add emphasis to sections.")]).content
-
     ## DISPLAY RESPONSE 
     st.markdown(response['choices'][0]['message']['content'])  
 
