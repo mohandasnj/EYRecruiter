@@ -104,7 +104,9 @@ for person in out:
 
     # person["person_string"] = person_string
 
-
+# Show me everyone interested in archery in a tabular format
+# Find me people in the assurance service line that are most similar to Nathan Frank, and rank them based off similarity.
+# Give me a pie chart distribution of the employees based on service line
 
 with open("people.json", "w") as f:
     json.dump(out, f)

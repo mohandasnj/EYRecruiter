@@ -21,11 +21,7 @@
             "Sarah Edwards",
             "Brandy Frazier",
             "Julie Chavez",
-            "Brandi Taylor",
-            "Bobby Lewis",
-            "Cindy Delgado",
-            "Troy Wilson",
-            "Charles Black"
+            "Brandi Taylor"
         ]
     },
     {
@@ -340,7 +336,9 @@
         "personal_interests": [
             "Crafts",
             "Magic",
-            "Design"
+            "Design",
+            "Cycling",
+            "Chess"
         ],
         "people_worked_with": [
             "Jason Wilson",
@@ -424,8 +422,7 @@
         ],
         "people_worked_with": [
             "Charles Black",
-            "Troy Wilson",
-            "Julie Chavez"
+            "Troy Wilson"
         ],
         "sub_competency": "Supply Chain & Operations"
     },
