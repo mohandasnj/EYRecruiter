@@ -62,7 +62,7 @@ out = []
 colleagues = []
 names = []
 
-for _ in range(200):
+for _ in range(20):
     name = fake.name()
     names.append(name)
     service_line = fake.service_line()
